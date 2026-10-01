@@ -41,10 +41,15 @@
                      data-title="{{ book['title']|lower }}"
                      data-author="{{ book['author']|lower }}">
 
-                <div class="book-cover" style="background-color: {{ book['cover_color'] }};">
-                    <span>📖</span>
-                    <strong>{{ book['title'] }}</strong>
-                </div>
+                <!-- Replaced colored div with real cover image -->
+                {% if book['image_url'] %}
+                    <img src="{{ book['image_url'] }}" alt="{{ book['title'] }}" class="book-cover-img">
+                {% else %}
+                    <div class="book-cover" style="background-color: {{ book['cover_color'] }};">
+                        <span>📖</span>
+                        <strong>{{ book['title'] }}</strong>
+                    </div>
+                {% endif %}
 
                 <div class="book-info">
                     <h3>{{ book['title'] }}</h3>
