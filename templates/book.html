@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}{{ book['title'] }} - PageTurner Books{% endblock %}
+
+{% block content %}
+<section class="container">
+    <div class="book-detail">
+
+        <div class="large-cover" style="background-color: {{ book['cover_color'] }};">
+            <span>📖</span>
+            <strong>{{ book['title'] }}</strong>
+        </div>
+
+        <div class="detail-info">
+            <span class="tag">{{ book['category'] }}</span>
+            <h1>{{ book['title'] }}</h1>
+            <h3>by {{ book['author'] }}</h3>
+
+            <p>{{ book['description'] }}</p>
+
+            <p class="price big-price">₹{{ "%.2f"|format(book['price']) }}</p>
+
+            {% if book['stock'] > 0 %}
+                <p class="stock available">✓ In stock ({{ book['stock'] }} available)</p>
+
+                <form method="POST"
+                      action="{{ url_for('add_to_cart', book_id=book['id']) }}">
+                    <button class="button" type="submit">Add to Cart</button>
+                </form>
+            {% else %}
+                <p class="stock out">✗ Out of stock</p>
+            {% endif %}
+
+            <a href="{{ url_for('home') }}" class="back-link">← Back to books</a>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

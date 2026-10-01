@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout - PageTurner Books{% endblock %}
+
+{% block content %}
+<section class="container narrow">
+    <h1>Checkout</h1>
+
+    <div class="checkout-layout">
+        <form method="POST" class="form-card" id="checkoutForm">
+
+            <label for="customer_name">Full Name</label>
+            <input type="text" id="customer_name" name="customer_name"
+                   value="{{ request.form.get('customer_name', '') }}"
+                   required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone"
+                   value="{{ request.form.get('phone', '') }}"
+                   maxlength="10"
+                   pattern="[0-9]{10}"
+                   placeholder="10 digit phone number"
+                   required>
+
+            <label for="address">Delivery Address</label>
+            <textarea id="address" name="address" rows="5" required>{{ request.form.get('address', '') }}</textarea>
+
+            <button class="button" type="submit">Place Order</button>
+        </form>
+
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+
+            {% for item in items %}
+                <div class="summary-row">
+                    <span>{{ item['book']['title'] }} × {{ item['quantity'] }}</span>
+                    <strong>₹{{ "%.2f"|format(item['item_total']) }}</strong>
+                </div>
+            {% endfor %}
+
+            <hr>
+
+            <div class="summary-row total-row">
+                <span>Total</span>
+                <strong>₹{{ "%.2f"|format(total) }}</strong>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Orders - PageTurner Books{% endblock %}
+
+{% block content %}
+<section class="container">
+    <h1>All Orders</h1>
+
+    {% if orders %}
+        <div class="cart-table-wrapper">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Phone</th>
+                        <th>Total</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('order_confirmation', order_id=order['id']) }}">
+                                #{{ order['id'] }}
+                            </a>
+                        </td>
+                        <td>{{ order['customer_name'] }}</td>
+                        <td>{{ order['phone'] }}</td>
+                        <td>₹{{ "%.2f"|format(order['total']) }}</td>
+                        <td>{{ order['created_at'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No orders yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

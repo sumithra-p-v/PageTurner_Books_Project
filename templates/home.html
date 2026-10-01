@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Home - PageTurner Books{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div>
+        <p class="hero-small">WELCOME TO</p>
+        <h1>PageTurner Books</h1>
+        <p>Discover your next favorite book.</p>
+        <a href="#books" class="button">Browse Books</a>
+    </div>
+</section>
+
+<section class="container" id="books">
+    <h2>Find Your Book</h2>
+
+    <input
+        type="text"
+        id="searchBox"
+        class="search-box"
+        placeholder="Search by title or author..."
+    >
+
+    <div class="categories">
+        <a class="category-button {% if not selected_category %}active{% endif %}"
+           href="{{ url_for('home') }}">All</a>
+
+        {% for category in categories %}
+            <a class="category-button {% if selected_category == category['category'] %}active{% endif %}"
+               href="{{ url_for('home', category=category['category']) }}">
+                {{ category['category'] }}
+            </a>
+        {% endfor %}
+    </div>
+
+    <div class="book-grid" id="bookGrid">
+        {% for book in books %}
+            <article class="book-card"
+                     data-title="{{ book['title']|lower }}"
+                     data-author="{{ book['author']|lower }}">
+
+                <div class="book-cover" style="background-color: {{ book['cover_color'] }};">
+                    <span>📖</span>
+                    <strong>{{ book['title'] }}</strong>
+                </div>
+
+                <div class="book-info">
+                    <h3>{{ book['title'] }}</h3>
+                    <p class="author">by {{ book['author'] }}</p>
+                    <p><span class="tag">{{ book['category'] }}</span></p>
+                    <p class="price">₹{{ "%.2f"|format(book['price']) }}</p>
+
+                    <a class="button secondary"
+                       href="{{ url_for('book', book_id=book['id']) }}">
+                        View Book
+                    </a>
+                </div>
+            </article>
+        {% else %}
+            <p>No books found.</p>
+        {% endfor %}
+    </div>
+
+    <p id="noSearchResults" class="empty-message hidden">
+        No books match your search.
+    </p>
+</section>
+
+{% endblock %}
